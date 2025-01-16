@@ -43,6 +43,13 @@ char *criptografia_substituicao (char *key, char *texto)
     }
     return textoCriptografado;
 }
+char* descriptografar_substituicao (char *key, char *texto_criptografado)
+{
+    //pegar texto criptografado
+    //pegar chave chave= qwertyuiopasdfghjklzxcvbnm
+    //usar uma funcao hash, o indice da chave tem ser igual o do alfabeto ex. primeira letra da 
+    //chave ela tem que produzir um indice = 0 e o indice da letra a do alfabeto tem que ser 0 
+}
 
 int main(int argc, char *argv[])
 {
@@ -68,7 +75,6 @@ int main(int argc, char *argv[])
             return 1;
         }
         int caractere;
-
         printf("Digite o texto: ");
         while((caractere = getchar()) != '\n' && caractere != EOF)
         {
@@ -88,7 +94,7 @@ int main(int argc, char *argv[])
         }
         texto[indice] = '\0';
 
-        printf("seu texto é: %s \n", texto);
+        //printf("seu texto é: %s \n", texto);
         printf("seu texto criptografado é: %s\n", criptografia_substituicao (key, texto));
 
         free(texto);
@@ -97,8 +103,63 @@ int main(int argc, char *argv[])
     }else
     {
         //pedir chave
+        printf("Qual sua chave: ");
+        char key[26];
+        scanf("%s", key);
+        int tamanho_key = strlen(key);
+        if(tamanho_key != TAMANHO_ALFABETO)
+        {
+            printf("A chave deve ter 26 digitos\n");
+            return 3;
+        }
+        for (int i = 0; i < tamanho_key; i++)
+        {
+            if (!isalpha(key[i]))
+            {
+                printf("A chave deve ter apenas letras\n");
+                return 3;
+            }
+            // Mensagem de chave for inválida, contem letra repetidas
+            for (int j = i + 1; j < tamanho_key; j++)
+            {
+                if (key[i] == key[j])
+                {
+                    printf("A chave não pode ter letras repetidas\n");
+                    return 3;
+                }
+            }
+        }
         //pedir texto criptografado
+        size_t tamanho_descypt = 10, indice_descrypt = 0;
+        char *texto_descrypt = malloc(tamanho_descypt * sizeof(char));
+        //verificacao
+        if(texto_descrypt == NULL)
+        {
+            printf("alocação de memoria falhou \n");
+            return 1;
+        }
+        printf("Digite o texto: ");
+        int caractere_descrypt;
+        while ((caractere_descrypt = getchar()) != '\n' && caractere_descrypt != EOF); //limpa o buffer
+        while((caractere_descrypt = getchar()) != '\n' && caractere_descrypt != EOF)
+        {
+            if (indice_descrypt + 1 >= tamanho_descypt)
+            {
+                tamanho_descypt *= 2;
+                char *buffer_novo_descrypt = realloc(texto_descrypt, tamanho_descypt);
+                //verificacao
+                if(buffer_novo_descrypt == NULL)
+                {
+                    printf("alocação de memoria falhou \n");
+                    return 1;
+                }
+                texto_descrypt = buffer_novo_descrypt;
+            }
+            texto_descrypt[indice_descrypt++] = caractere_descrypt;
+        }
+        texto_descrypt[indice_descrypt] = '\0';
         //funcao para descriptografar
         //retorna texto 
+        free(texto_descrypt);
     }
 }
