@@ -88,18 +88,52 @@ char* descriptografar_substituicao (char *key, char *texto_criptografado)
     return textoDescriptografado;
 }
 
+int login(void){
+    int opcao;
+
+    printf("* ##   ##   #####   ##   ##    ####   ######   ###  ### ######    # ##### *\n");
+    printf("* ###  ##  ### ###  ##   ##   ##  ##   ##  ##   ##  ##   ##  ##   ##  ##  *\n");
+    printf("* #### ##  ##   ##  ##   ##  ##        ##  ##    ####    ##  ##     ## *\n");
+    printf("* #######  ##   ##   ## ##   ##        #####      ##     #####      ## *\n");
+    printf("* ## ####  ##   ##   ## ##   ##        ## ##      ##     ##         ## *\n");
+    printf("* ##  ###  ### ###    ###     ##  ##   ## ##      ##     ##         ## *\n");
+    printf("* ##   ##   #####     ###      ####   #### ##    ####   ####       #### *\n");
+    printf("\n1. Login\n2. Cadastro\n3. Sair\n\n");
+    scanf("%d", &opcao);
+
+    switch (opcao){
+        case 1:
+            //funcao login
+            break;
+        case 2:
+            //funcao cadasstro
+            break;
+        case 3:
+            return 1;
+            break;
+        default:
+            printf("Opção invalida.\n");
+    }
+
+    return 0;
+}
+
 int main(int argc, char *argv[])
 {
-    //verificacao uso correto
-    if(argc != 2)
+    // sair do programa, se login retorna 1
+    if(login() == 1) return 0;
+
+    //verificacao uso correto - Isso sai - criar menu para decidir encrypt descrypt
+    /*if(argc != 2)
     {
         printf("\nUse: \"novcrypt encrypt\" para criptografar ou \"novcrypt descrypt\" para descriptografar.\n\n");
         return 2;
-    }
+    }*/
+    
     //se criptografar ou descriptografar
     int caracteres_encrypt = 7;
     if(strlen(argv[1]) == caracteres_encrypt)
-    { 
+    {     
         char *key = chave();
         printf("Sua chave é %s\n", key);
 
@@ -113,6 +147,7 @@ int main(int argc, char *argv[])
             return 1;
         }
         int caractere;
+        
         printf("Digite o texto: ");
         while((caractere = getchar()) != '\n' && caractere != EOF)
         {
