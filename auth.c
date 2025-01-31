@@ -17,6 +17,7 @@ int menu(void){
     switch (opcao){
         case 1:
             //funcao login
+            login();
             break;
         case 2:
             //funcao cadasstro

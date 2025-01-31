@@ -8,4 +8,6 @@ char *criptografia_substituicao (char *key, char *texto);
 char* descriptografar_substituicao (char *key, char *texto_criptografado);
 int menu(void);
 
+extern void login();
+
 #endif
