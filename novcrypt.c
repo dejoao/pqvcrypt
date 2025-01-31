@@ -1,8 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h> //usado na funcao chave
-#include <time.h> //usado na funcao chave
-#include <string.h>
-#include <ctype.h>
 #include "config.h"
 
 char *chave(void)
@@ -24,10 +19,81 @@ char *chave(void)
     return chave;
 }
 
+char* get_string(void){
+    
+    size_t tamanho = 10, indice = 0;
+    char *texto = malloc(tamanho * sizeof(char));
+    //verificacao
+    if(texto == NULL)
+    {
+        printf("alocação de memoria falhou \n");
+        return NULL;
+    }
+    int caractere;
+
+    while ((caractere = getchar()) != '\n' && caractere != EOF);    
+    while((caractere = getchar()) != '\n' && caractere != EOF)
+    {
+        if (indice + 1 >= tamanho)
+        {
+            tamanho *= 2;
+            char *buffer_novo = realloc(texto, tamanho);
+            //verificacao
+            if(buffer_novo == NULL)
+            {
+                printf("alocação de memoria falhou \n");
+                return NULL;
+            }
+            texto = buffer_novo;
+        }
+        texto[indice++] = caractere;
+    }
+    texto[indice] = '\0';
+
+    return texto;
+}
+
+char* get_key(void){
+
+    char key[TAMANHO_ALFABETO + 1];  // Buffer temporário para leitura
+    scanf("%s", key);
+
+    int tamanho_key = strlen(key);
+
+    if (tamanho_key != TAMANHO_ALFABETO) {
+        printf("A chave deve ter 26 dígitos\n");
+        return NULL;
+    }
+
+    for (int i = 0; i < tamanho_key; i++) {
+        if (!isalpha(key[i])) {
+            printf("A chave deve ter apenas letras\n");
+            return NULL;
+        }
+        // Checa letras repetidas
+        for (int j = i + 1; j < tamanho_key; j++) {
+            if (key[i] == key[j]) {
+                printf("A chave não pode ter letras repetidas\n");
+                return NULL;
+            }
+        }
+    }
+
+    // Aloca memória para armazenar a chave permanentemente
+    char* result = malloc((tamanho_key + 1) * sizeof(char));
+    if (result == NULL) {
+        perror("Erro ao alocar memória");
+        exit(EXIT_FAILURE);
+    }
+    strcpy(result, key);
+    return result;
+}
+
 int main(int argc, char *argv[])
 {
     // sair do programa, se login retorna 1
-    if(menu() == 1) return 0;
+    menu();
+    //if(menu() == 1) return 0;
 
     //verificacao uso correto - Isso sai - criar menu para decidir encrypt descrypt
     /*if(argc != 2)
@@ -36,7 +102,7 @@ int main(int argc, char *argv[])
         return 2;
     }*/
     
-    //se criptografar ou descriptografar
+    /* //se criptografar ou descriptografar
     int caracteres_encrypt = 7;
     if(strlen(argv[1]) == caracteres_encrypt)
     {     
@@ -44,34 +110,8 @@ int main(int argc, char *argv[])
         printf("Sua chave é %s\n", key);
 
         //pegar texto que vai ser criptografado
-        size_t tamanho = 10, indice = 0;
-        char *texto = malloc(tamanho * sizeof(char));
-        //verificacao
-        if(texto == NULL)
-        {
-            printf("alocação de memoria falhou \n");
-            return 1;
-        }
-        int caractere;
-        
         printf("Digite o texto: ");
-        while((caractere = getchar()) != '\n' && caractere != EOF)
-        {
-            if (indice + 1 >= tamanho)
-            {
-                tamanho *= 2;
-                char *buffer_novo = realloc(texto, tamanho);
-                //verificacao
-                if(buffer_novo == NULL)
-                {
-                    printf("alocação de memoria falhou \n");
-                    return 1;
-                }
-                texto = buffer_novo;
-            }
-            texto[indice++] = caractere;
-        }
-        texto[indice] = '\0';
+        char *texto = get_string();
 
         //printf("seu texto é: %s \n", texto);
         printf("seu texto criptografado é: %s\n", criptografia_substituicao (key, texto));
@@ -83,64 +123,17 @@ int main(int argc, char *argv[])
     {
         //pedir chave
         printf("Qual sua chave: ");
-        char key[26];
-        scanf("%s", key);
-        int tamanho_key = strlen(key);
-        if(tamanho_key != TAMANHO_ALFABETO)
-        {
-            printf("A chave deve ter 26 digitos\n");
-            return 3;
-        }
-        for (int i = 0; i < tamanho_key; i++)
-        {
-            if (!isalpha(key[i]))
-            {
-                printf("A chave deve ter apenas letras\n");
-                return 3;
-            }
-            // Mensagem de chave for inválida, contem letra repetidas
-            for (int j = i + 1; j < tamanho_key; j++)
-            {
-                if (key[i] == key[j])
-                {
-                    printf("A chave não pode ter letras repetidas\n");
-                    return 3;
-                }
-            }
-        }
+        char *key = get_key();
+        
         //pedir texto criptografado
-        size_t tamanho_descypt = 10, indice_descrypt = 0;
-        char *texto_descrypt = malloc(tamanho_descypt * sizeof(char));
-        //verificacao
-        if(texto_descrypt == NULL)
-        {
-            printf("alocação de memoria falhou \n");
-            return 1;
-        }
         printf("Digite o texto: ");
-        int caractere_descrypt;
-        while ((caractere_descrypt = getchar()) != '\n' && caractere_descrypt != EOF); //limpar buffer
-        while((caractere_descrypt = getchar()) != '\n' && caractere_descrypt != EOF)
-        {
-            if (indice_descrypt + 1 >= tamanho_descypt)
-            {
-                tamanho_descypt *= 2;
-                char *buffer_novo_descrypt = realloc(texto_descrypt, tamanho_descypt);
-                //verificacao
-                if(buffer_novo_descrypt == NULL)
-                {
-                    printf("alocação de memoria falhou \n");
-                    return 1;
-                }
-                texto_descrypt = buffer_novo_descrypt;
-            }
-            texto_descrypt[indice_descrypt++] = caractere_descrypt;
-        }
-        texto_descrypt[indice_descrypt] = '\0';
+        char *texto_descrypt = get_string();
+
         //funcao para descriptografar
         printf("seu texto descriptografado é: %s\n", descriptografar_substituicao(key, texto_descrypt));
         //retorna texto 
         free(texto_descrypt);
         return 0;
-    }
+    }*/
 }
+

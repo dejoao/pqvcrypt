@@ -1,13 +1,20 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include <stdio.h>
+#include <stdlib.h> //usado na funcao chave
+#include <time.h> //usado na funcao chave
+#include <string.h>
+#include <ctype.h>
+#include <sodium.h>
+
+#define HASH_SIZE crypto_pwhash_STRBYTES
 #define TAMANHO_ALFABETO 26
 
 //PROTOTIPOS
 char *criptografia_substituicao (char *key, char *texto);
 char* descriptografar_substituicao (char *key, char *texto_criptografado);
 int menu(void);
-
-extern void login();
+char* get_string(void);
 
 #endif
