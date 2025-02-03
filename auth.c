@@ -37,18 +37,39 @@ char* new_senha(void){
 void login(void){
 
     // Pegar email
-    printf("Email: ");
+    printf("Faça login\n\nEmail: ");
     char *email = get_string();
-    //printf("%s", email);
+    //fazer verificacao email valido
 
     // Pegar senha usar hash
     printf("Senha: ");
     char *hash = new_senha();
-    // printf("%s", hash);
+    printf("%s", hash);
 
     // Fazer consulta no banco de dados
+    
     // retorna 0 se estiver dados certos e existe no banco de dados
     // senao fazer cadastro
+    //Logado com sucesso mandar para tela inicial
+}
+
+void cadastro(void){
+
+    //Pegar email 
+    printf("\nCrie sua conta\n\nEmail: ");
+    char *email = get_string();
+    //fazer verificacao email valido
+
+    //guardar no banco de dados
+
+    //Pegar senha //Fazer Hash
+    printf("Senha: ");
+    char *senha_hash = new_senha();
+    
+    //Guardar no banco de dados
+    //Criado com sucesso
+    //Mandar para o login
+
 }
 
 int menu(void){
@@ -71,6 +92,7 @@ int menu(void){
             break;
         case 2:
             //funcao cadasstro
+            cadastro();
             break;
         case 3:
             return 1;

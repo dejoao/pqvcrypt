@@ -92,8 +92,7 @@ char* get_key(void){
 int main(int argc, char *argv[])
 {
     // sair do programa, se login retorna 1
-    menu();
-    //if(menu() == 1) return 0;
+    if(menu() == 1) return 0;
 
     //verificacao uso correto - Isso sai - criar menu para decidir encrypt descrypt
     /*if(argc != 2)

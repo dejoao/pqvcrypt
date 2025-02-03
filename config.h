@@ -7,6 +7,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <sodium.h>
+#include <sqlite3.h>
 
 #define HASH_SIZE crypto_pwhash_STRBYTES
 #define TAMANHO_ALFABETO 26
